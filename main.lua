@@ -861,8 +861,7 @@ local script = G2L["19"];
 			end
 			
 			step = step - workspace.DistributedGameTime
-			local tPos = tRoot.CFrame * CFrame.new(0,math.sin(tick() / math.pi * 10) * 2,0)
-			Root.CFrame = tPos - (tRoot.Velocity * (step * 0.003))
+			Root.CFrame = tRoot.CFrame - (tRoot.Velocity * (step * 0.003))
 		end)
 	
 		task.wait(Length)
@@ -947,8 +946,7 @@ local script = G2L["19"];
 			end
 			
 			step = step - workspace.DistributedGameTime
-			local tPos = tRoot.CFrame * CFrame.new(0,math.sin(tick() / math.pi * 10) * 2,0)
-			Root.CFrame = tPos - (tRoot.Velocity * (step * 0.003))
+			Root.CFrame = tRoot.CFrame - (tRoot.Velocity * (step * 0.003))
 		end)
 	
 		task.wait(Length)
@@ -1382,114 +1380,6 @@ local script = G2L["19"];
 		end
 		return "No servers found."
 	end)
-	
-	AddCommand({"walkvoid", "wvoid"}, "Voids on touch!", 0, function(msg, args, cmd)
-		if cmd.Env.Connection or cmd.Env.Connection2 then
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-			return
-		end
-		
-		local Character = LocalPlayer.Character
-		local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-		if not Humanoid then return end
-
-		local Parts = {}
-		for _,v in next, Character:GetChildren() do
-			if v:IsA("BasePart") then
-				Parts[#Parts + 1] = v
-			end
-		end
-
-		cmd.Env.Connection = RunService.Heartbeat:Connect(function()
-			local vel = {}
-			for _,v in next, Parts do
-				vel[v] = v.Velocity
-				local Velocity = vel[v] or Vector3.new(0,0,0)
-				v.Velocity = Velocity + (v.CFrame.LookVector * 50000) + Vector3.new(0, -9e7, 0)
-			end
-			RunService.RenderStepped:Wait()
-			for _,v in next, Parts do
-				v.Velocity = vel[v]
-			end
-		end)
-		
-		cmd.Env.Connection2 = Humanoid.Died:Connect(function()
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-		end)
-	end)
-	
-	AddCommand({"unwalkvoid", "unwvoid"}, "Reverses walkvoid command.", 0, function()
-		local cmd = GetCommand("walkvoid")
-		if cmd.Env.Connection then
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-		end
-		
-		if cmd.Env.Connection2 then
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-		end
-	end)
-	
-	AddCommand({"walkfling", "wfling"}, "Flings on touch!", 0, function(msg, args, cmd)
-		if cmd.Env.Connection or cmd.Env.Connection2 then
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-			return
-		end
-		
-		local Character = LocalPlayer.Character
-		local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-		if not Humanoid then return end
-
-		local Parts = {}
-		for _,v in next, Character:GetChildren() do
-			if v:IsA("BasePart") then
-				Parts[#Parts + 1] = v
-			end
-		end
-
-		cmd.Env.Connection = RunService.Heartbeat:Connect(function()
-			local vel = {}
-			for _,v in next, Parts do
-				vel[v] = v.Velocity
-				local Velocity = vel[v] or Vector3.new(0,0,0)
-				v.Velocity = Velocity + (v.CFrame.LookVector * 50000) + Vector3.new(0, 9e7, 0)
-			end
-			RunService.RenderStepped:Wait()
-			for _,v in next, Parts do
-				v.Velocity = vel[v]
-			end
-		end)
-		
-		cmd.Env.Connection2 = Humanoid.Died:Connect(function()
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-		end)
-	end)
-	
-	AddCommand({"unwalkfling", "unwfling"}, "Reverses walkfling command.", 0, function()
-		local cmd = GetCommand("walkfling")
-		if cmd.Env.Connection then
-			cmd.Env.Connection:Disconnect()
-			cmd.Env.Connection = nil
-		end
-		
-		if cmd.Env.Connection2 then
-			cmd.Env.Connection2:Disconnect()
-			cmd.Env.Connection2 = nil
-		end
-	end)
 
 	local playerCharacterParts = {}
 	local function trackCharacterParts(player)
@@ -1690,10 +1580,6 @@ local script = G2L["19"];
 	AddCommand({"dex", "explorer"}, "Calmly skidded.", 0, function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
 	end)
-	
-	AddCommand({"remotespy", "rspy"}, "Calmly skidded.", 0, function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/78n/SimpleSpy/main/SimpleSpySource.lua"))()
-	end)
 
 	local bypass = {
 		["A"] = "А",
@@ -1823,42 +1709,79 @@ local script = G2L["19"];
 		end
 		return Msg
 	end
-	
-	AddCommand({"bypass3", "by3"}, "Bypasses in chat.", 1, function(msg, args, cmd)
-		local Message = table.concat(args, " ")
-		local KW = Gen2(Message)
-		local Cryllic = Gen(KW, false)
-		--ResetFilter()
-		Chat(Cryllic)
-	end)
 
-	AddCommand({"bypass4", "by4"}, "Bypasses in chat.", 1, function(msg, args, cmd)
+	AddCommand({"bypass3", "by3"}, "Bypasses in chat.", 1, function(msg, args, cmd)
 		local Message = table.concat(args, " ")
 		local KW = Gen2(Message)
 		--ResetFilter()
 		Chat(KW)
 	end)
 
-	AddCommand({"bypass5", "by5"}, "Bypasses in chat.", 1, function(msg, args, cmd)
-		local Fixed = ""
-		for _, word in next, args do
-			local newWord = ""
-			for _, letter in word:split("") do
-				newWord = newWord .. letter .. string.rep("￸", 4)
-			end
-			Fixed = Fixed .. newWord
-			if _ ~= #args then
-				Fixed = Fixed .. ""
-			end
-		end
-		local Fixed = "SLU#T" .. Fixed
-		--ResetFilter()
-		Chat(Fixed)
-	end)
-
-	AddCommand({"bypass6", "by6"}, "Bypasses in chat.", 1, function(msg, args, cmd)
+	AddCommand({"bypass4", "by4"}, "Bypasses in chat.", 1, function(msg, args, cmd)
 		local Message = table.concat(args, " ")
 		Chat(" ̌̌̌̌̌  ॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚     ̌̌̌̌  ᳚᳚᳚᳚᳚ť"..Gen(Message, true))
+	end)
+
+	AddCommand({"johncrash", "crash"}, "Crashes the game. credits --> discord.gg/YJ8uMfp4Yg", 0, function()
+		local hum = LocalPlayer.Character.Humanoid
+		local Anim = Instance.new("Animation")
+		Anim.AnimationId = "rbxassetid://84315373"
+		hum:LoadAnimation(Anim):Play()
+	end)
+
+	AddCommand({"sitfling", "sfling"}, "im retarded", 0, function()
+		local Character = LocalPlayer.Character
+		local Humanoid = Character.Humanoid
+		local Root = Character.PrimaryPart
+		Character.Archivable = true
+		
+		local Clone = Character:Clone()
+		local cRoot = Clone.PrimaryPart
+		local cHumanoid = Clone.Humanoid
+		Clone.Parent = workspace
+		LocalPlayer.Character = Clone
+		Camera.CameraSubject = cHumanoid
+		Humanoid.Sit = true
+		
+		local Connections = {}
+		
+		local BodyParts = {}
+		for _, BodyPart in Character:GetChildren() do
+		    if not BodyPart:IsA("BasePart") then continue end
+		    BodyPart.Transparency = 0.5
+		    BodyParts[#BodyParts + 1] = BodyPart
+		end
+		
+		for _, BodyPart in Clone:GetChildren() do
+		    if not BodyPart:IsA("BasePart") then continue end
+		    BodyParts[#BodyParts + 1] = BodyPart
+		end
+		
+		Connections[#Connections + 1] = RunService.Stepped:Connect(function()
+		    for _, BodyPart in BodyParts do
+		        BodyPart.CanCollide = false
+		    end
+		    Root.CFrame = cRoot.CFrame
+		    Root.Velocity = Vector3.new(0, 9e8, 0)
+		end)
+		
+		Connections[#Connections + 1] = RunService.Heartbeat:Connect(function()
+		    Root.CFrame = cRoot.CFrame
+		end)
+		
+		Connections[#Connections + 1] = cHumanoid:GetPropertyChangedSignal("Health"):Connect(function()
+		    local New = cHumanoid.Health
+		    if New <= 0 then
+		        LocalPlayer.Character = Character
+		        Camera.CameraSubject = Humanoid
+		        Humanoid.Health = 0
+		        Clone:Destroy()
+		
+		        for _, Connection in Connections do
+		            Connection:Disconnect()
+		        end
+		    end
+		end)
 	end)
 	
 	table.sort(Commands, function(a, b)
