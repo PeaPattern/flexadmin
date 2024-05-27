@@ -1719,7 +1719,7 @@ local script = G2L["19"];
 
 	AddCommand({"bypass4", "by4"}, "Bypasses in chat.", 1, function(msg, args, cmd)
 		local Message = table.concat(args, " ")
-		Chat(" ̌̌̌̌̌  ॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚     ̌̌̌̌  ᳚᳚᳚᳚᳚ť"..Gen(Message, true))
+		Chat(" ̌̌̌̌̌  ॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚॓᳚     ̌̌̌̌  ᳚᳚᳚᳚᳚ť"..Gen(Message))
 	end)
 
 	AddCommand({"johncrash", "crash"}, "Crashes the game. credits --> discord.gg/YJ8uMfp4Yg", 0, function()
