@@ -1783,6 +1783,35 @@ local script = G2L["19"];
 		    end
 		end)
 	end)
+
+	AddCommand({"firetouchinterest", "fti"}, "Fire all touch interests.", 0, function(
+		local Root = LocalPlayer.Character.PrimaryPart
+		for _, Obj in next, workspace:GetChildren() do
+			if Obj:IsA("TouchTransmitter") then
+				firetouchinterest(Root, Obj.Parent, 0)
+				wait()
+				firetouchinterest(Root, Obj.Parent, 1)
+			end
+		end
+	end)
+
+	AddCommand({"fireclickdetectors", "fcd"}, "Fire all click detectors.", 0, function(
+		for _, Obj in next, workspace:GetChildren() do
+			if Obj:IsA("ClickDetector") then
+				fireclickdetector(Obj)
+			end
+		end
+	end)
+
+	AddCommand({"fireproximityprompts", "fpp"}, "Fire all proximity prompt.", 0, function(
+		for _, Obj in next, workspace:GetChildren() do
+			if Obj:IsA("ClickDetector") then
+				fireproximityprompt(Obj, 0)
+				wait()
+				fireproximityprompt(Obj, 1)
+			end
+		end
+	end)
 	
 	table.sort(Commands, function(a, b)
 		return a.Names[1] < b.Names[1]
